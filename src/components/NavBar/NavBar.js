@@ -20,7 +20,7 @@ function NavBar() {
                         <a className="nav-link">Profile</a>
                     </li>
                 </Link>
-                <Link to ='/events'>
+                <Link to ='/event'>
                     <li className="nav-item active">
                         <a className="nav-link" >Events</a>
                     </li>

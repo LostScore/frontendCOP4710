@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { useState } from "react";
+import * as Validator from 'validatorjs';
 
 function Register() {
   // State Hooks
@@ -16,30 +17,42 @@ function Register() {
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
-    if (
-      username !== "" &&
-      password !== "" &&
-      email !== "" &&
-      firstname !== "" &&
-      lastname !== "" &&
-      phonenum !== ""
-    ) {
-      Axios.post("http://localhost:5000/api/register", {
+      event.preventDefault();
+      const data = {
         username: username,
         password: password,
         email: email,
         firstname: firstname,
         lastname: lastname,
         phonenum: phonenum,
-      })
+      }
+      const rules = {
+        username: 'required',
+        password: 'required',
+        email: 'required|email',
+        firstname: 'required',
+        lastname: 'required',
+        phonenum: 'required',
+      }
+      const validate = new Validator(data,rules);
+      if(validate.passes()){
+        Axios.post("http://localhost:5000/api/register", data)
         .then(function (response) {
           console.log(response);
+          localStorage.setItem("username",username);
+          localStorage.setItem("userlevel",1);
+          localStorage.setItem("firstname",firstname);
+          localStorage.setItem("lastname",lastname);
+          localStorage.setItem("phonenum",phonenum);
+          localStorage.setItem("useremail",email);
         })
         .catch(function (error) {
           console.log(error);
         });
-    }
+      } else {
+        console.log(validate.errors);
+      }
+
   }
 
   return (
@@ -54,7 +67,7 @@ function Register() {
                 type="text"
                 className="form-control"
                 id="inputusername"
-                placeholder="name@example.com"
+                placeholder="bsmith1234"
                 onChange={(event) =>
                   handleInputs(event.target.value, setUsername)
                 }

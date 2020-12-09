@@ -1,22 +1,29 @@
 import Axios from "axios";
 import { useState } from "react";
-import { Redirect } from "react-router-dom";
-
+import Error from './Status/Error.js';
+import Success from './Status/Error.js';
 function Login() {
   const [inputusername, setInputuser] = useState("");
   const [inputpassword, setInputpassword] = useState("");
-  const [errorExistance, setError] = useState(false);
-  const [firstCheck, setFirstCheck] = useState(false);
+
 
   function handleInputs(value, setState) {
     setState(value);
     console.log(value);
   }
 
+  function displayError(){
+    <Error></Error>
+  }
+
+  function displaySuccess(){
+    <Success></Success>
+  }
+  
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("Username: " + inputusername);
-    console.log("Password: " + inputpassword);
+    console.log("InputUserName: " + inputusername);
+    console.log("InputPassword: " + inputpassword);
     
     if (inputusername !== "" && inputpassword !== "") {
       Axios.post("http://localhost:5000/api/login", {
@@ -25,19 +32,19 @@ function Login() {
         
       })
         .then(function (response) {
-          setFirstCheck(true);
           console.log(response);
-          console.log("Status is res:", response.status);
-          setError(false);
           localStorage.setItem('username', response.data.user_name);
           localStorage.setItem('userlevel', response.data.user_level);
+          localStorage.setItem("firstname",response.data.first_name);
+          localStorage.setItem("lastname",response.data.last_name);
+          localStorage.setItem("phonenum",response.data.phone_number);
+          localStorage.setItem("useremail",response.data.email);
+          displaySuccess();
           
         })
         .catch(function (error) {
-          setFirstCheck(true);
-          console.log("Status is: er", error.status);
           console.log(error);
-          setError(true);
+          displayError();
         });
     }
   }
@@ -89,18 +96,6 @@ function Login() {
             Sign In
           </button>
         </form>
-        {console.log(firstCheck)}
-        {firstCheck &&
-          (errorExistance ? (
-            <div class="alert alert-danger" role="alert">
-              Error: Invalid Credentials!
-            </div>
-          ) : (
-            <div class="alert alert-success" role="alert">
-              Login Success!
-              <Redirect to ="/"></Redirect>
-            </div>
-          ))}
       </header>
     </div>
   );
