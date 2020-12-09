@@ -1,62 +1,164 @@
-import React from "react";
+import Axios from "axios";
+import { useState } from "react";
+import * as Validator from "validatorjs";
 
-export default function Navbar() {
-  var eventName = document.getElementById("Title");
-  var eventAdmin = document.getElementById("Admin");
-  var eventDesc = document.getElementById("Description");
-  var eventUrl = document.getElementById("Url");
-  var eventLoc = document.getElementById("Location");
-  var eventStart = document.getElementById("StartDate");
-  var eventDate = document.getElementById("EndDate");
+function CreateEvent() {
+  const username = localStorage.getItem("username");
+  const id = localStorage.getItem("userid");
+  const [eventTitle, setEventTitle] = useState("");
+  const [eventDesc, setDesc] = useState("");
+  const [eventCity, setCity] = useState("");
+  const [eventUrl, setUrl] = useState("");
+  const [startdate, setStartDate] = useState("");
+  const [enddate, setEndDate] = useState("");
 
-  function handleSubmit(){
-    console.log(eventName);
-    console.log(eventAdmin);
-    console.log(eventDesc);
-    console.log(eventUrl);
-    console.log(eventLoc);
-    console.log(eventStart);
-    console.log(eventDate);
+  function handleInputs(value, setState) {
+    setState(value);
+    console.log(value);
+  }
+
+  function handleSubmit(event) {
+      event.preventDefault();
+      const data = {
+          adminname: username,
+          adminid: id,
+          eventTitle: eventTitle,
+          eventCity: eventCity,
+          eventUrl: eventUrl,
+          startdate: startdate,
+          enddate: enddate,
+          eventDesc: eventDesc
+      }
+    console.log(data);
+    const rules = {
+        eventTitle: 'required',
+        eventCity: 'required',
+        eventUrl: 'required|url',
+        startdate: 'required',
+        enddate: 'required',
+    }
+    const validate = new Validator(data,rules);
+    if(validate.passes()){
+        Axios.post("http://localhost:5000/api/events/create", data)
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
+    }
+    else{
+        console.log(validate.errors);
+    }
   }
 
   return (
-    <div>
-      <h1>Event Creation Form</h1>
-      <br></br>
-      <form name="create">
-        <label for="title">Event Title: </label>
-        <input type="TEXT" name="title" id="Title" size="30"></input>
-        &nbsp;&nbsp;&nbsp;
-        <label for="admin">Admin Name: </label>
-        <input type="TEXT" name="admin" id="Admin" size="30"></input>
-        <br></br>
-        <label for="url">Host Website: </label>
-        <input type="TEXT" name="url" id="Url" size="30"></input>
-        &nbsp;&nbsp;&nbsp;
-        <label for="location">Event Location: </label>
-        <input type="TEXT" name="location" id="Location" size="30"></input>
-        <br></br>
-        <label for="startDate">Event Start Date: </label>
-        <input type="TEXT" name="startDate" id="StartDate" size="30"></input>
-        &nbsp;&nbsp;&nbsp;
-        <label for="endDate">Event End Date: </label>
-        <input type="TEXT" name="endDate" id="EndDate" size="30"></input>
-        <br></br>
-        <label for="description" style={{ marginRight: 37 + "em" }}>
-          Event Description:{" "}
-        </label>
-        <br></br>
-        <textarea
-          name="description"
-          id="Description"
-          rows="3"
-          cols="100"
-        ></textarea>
-        <br></br>
+    <div className="createEvent">
+      <p> Register</p>
+      <form>
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputtitle">Event Title</label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputtitle"
+                placeholder="Cool Event 1234"
+                onChange={(event) =>
+                  handleInputs(event.target.value, setEventTitle)
+                }
+                required
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputurl">Event URL</label>
+              <input
+                type="url"
+                className="form-control"
+                id="inputurl"
+                placeholder="example.com"
+                onChange={(event) => handleInputs(event.target.value, setUrl)}
+                required
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputcity">Event City</label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputcity"
+                placeholder="Orlando"
+                onChange={(event) => handleInputs(event.target.value, setCity)}
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputfirstname">Start Date</label>
+              <input
+                type="date"
+                className="form-control"
+                id="inputfirstname"
+                placeholder="Date"
+                onChange={(event) =>
+                  handleInputs(event.target.value, setStartDate)
+                }
+                required
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputenddate">End Date</label>
+              <input
+                type="date"
+                className="form-control"
+                id="inputenddate"
+                placeholder="Date"
+                onChange={(event) =>
+                  handleInputs(event.target.value, setEndDate)
+                }
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputdesc">Event Description</label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputdesc"
+                placeholder="Sample Description"
+                onChange={(event) => handleInputs(event.target.value, setDesc)}
+                required
+                
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit}
+        >
+          Register
+        </button>
       </form>
-      <button class="btn btn-primary" type="submit" onClick={handleSubmit}>
-        Submit Event for Approval
-      </button>
     </div>
   );
 }
+
+export default CreateEvent;

@@ -9,7 +9,6 @@ import event from './components/Events/events.js';
 import CreateEvent from './components/createEvent/createEvent.js';
 import HeldEvent from './components/heldEvent/heldEvent.js';
 import lookupEvent from './components/lookupEvent/lookupEvent.js';
-import { useState } from 'react';
 
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 

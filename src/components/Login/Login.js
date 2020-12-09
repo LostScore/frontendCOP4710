@@ -35,17 +35,16 @@ function Login() {
           console.log(response);
           localStorage.setItem('username', response.data.user_name);
           localStorage.setItem('userlevel', response.data.user_level);
+          localStorage.setItem('userid', response.data.id);
           localStorage.setItem("firstname",response.data.first_name);
           localStorage.setItem("lastname",response.data.last_name);
           localStorage.setItem("phonenum",response.data.phone_number);
           localStorage.setItem("useremail",response.data.email);
-          displaySuccess();
-          
+          alert("Login Successful!");
         })
         .catch(function (error) {
           console.log(error);
-          displayError();
-        });
+          alert("Invalid Credentials");
     }
   }
 

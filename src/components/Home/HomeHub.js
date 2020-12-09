@@ -5,6 +5,7 @@ function HomeHub(){
     function clearLocalStorage(){
         localStorage.removeItem("username");
         localStorage.removeItem("userlevel");
+        localStorage.removeItem("userid");
         localStorage.removeItem("firstname");
         localStorage.removeItem("lastname");
         localStorage.removeItem("phonenum");

@@ -1,38 +1,104 @@
-import React from "react"
+import Axios from "axios";
+import { useState } from "react";
 
-export default function Navbar() {
 
-    var eventAdmin = document.getElementById("Admin");
-    var eventUrl = document.getElementById("Url");
-    var eventLoc = document.getElementById("Location");
-    var eventStart = document.getElementById("StartDate");
-    function handleSubmit(){
-        console.log(eventAdmin);
-        console.log(eventUrl);
-        console.log(eventLoc);
-        console.log(eventStart);
-    }
+function HeldEvent() {
+  // State Hooks
+  const username = localStorage.getItem("username");
+  const [events, setEvents] = useState([]);
+  const [displayTable, setDisplayTable] = useState(false);
+  function handleInputs(value, setState) {
+    setState(value);
+    console.log(value);
+  }
 
-    return (
-        <div>
-        <h1>Held Event Search Form</h1>
-        <br></br>
-        <form name = "create">
-        <label for="admin">Admin name: </label>
-        <input type="TEXT" name="admin" id="Admin" size="30" title = "Admin"></input>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <label for="url">Url: </label>
-        <input type="TEXT" name="url" id="Url" size="30"></input>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <label for="location">Location: </label>
-        <input type="TEXT" name="location" id="Location" size="30"></input>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <label for="startDate">Start Date: </label> 
-        <input type="TEXT" name="startDate" id="StartDate" size="30"></input>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        </form>
-        <br></br>
-        <button class="btn btn-primary" type="submit" onClick = {handleSubmit}>Check Held Events</button>
-        </div>
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log("Submitted Query with user:",username );
+    Axios.get(
+    `http://localhost:5000/api/events/adminEvents/${username}`
     )
+    .then(function (response) {
+        console.log(response);
+        setDisplayTable(true);
+        setEvents(response.data.events);
+        events.map((event) => {
+          console.log(event); 
+        });
+        localStorage.setItem("userlevel","2");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }
+
+  function handleSubmit1(event) {
+    event.preventDefault();
+    console.log("Submitted Query with user:",username );
+    Axios.get(
+    `http://localhost:5000/api/events/adminEvents/active/${username}`
+    )
+    .then(function (response) {
+        console.log(response);
+        setDisplayTable(true);
+        setEvents(response.data.events);
+        events.map((event) => {
+          console.log(event);
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }
+
+  return (
+    <div className="heldEvent">
+      <h5>Click Search to Find Event's You Have Hosted</h5>
+        <br />
+        <br/>
+        <button type="submit" className="btn btn-primary" onClick={handleSubmit1}>
+          Currently Active Events
+        </button>
+        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+          All Events
+        </button>
+
+        <h1>Event's Hosted</h1>
+        {displayTable ? (
+              <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Event Name</th>
+                  <th scope="col">URL</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">End Date</th>
+                </tr>
+              </thead>
+      
+              {events.map((e) => (
+                
+                <tbody key ={e.event_id}>
+                  <tr>
+                    <td>{e.admin_username}</td>
+                    <td>{e.event_title}</td>
+                    <td>{e.homepage_url}</td>
+                    <td>{e.start_date}</td>
+                    <td>{e.end_date}</td>
+                
+                  </tr>
+                </tbody>
+                
+              ))}
+            </table>
+      ) : (
+        <a>No Search</a>
+      )}
+        
+    </div>
+  );
 }
+
+export default HeldEvent;

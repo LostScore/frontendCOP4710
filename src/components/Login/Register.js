@@ -36,18 +36,14 @@ function Register() {
       }
       const validate = new Validator(data,rules);
       if(validate.passes()){
-        Axios.post("http://localhost:5000/api/register", data)
+        Axios.post("http://localhost:5000/api/addUser", data)
         .then(function (response) {
           console.log(response);
-          localStorage.setItem("username",username);
-          localStorage.setItem("userlevel",1);
-          localStorage.setItem("firstname",firstname);
-          localStorage.setItem("lastname",lastname);
-          localStorage.setItem("phonenum",phonenum);
-          localStorage.setItem("useremail",email);
+          alert("Creation Successful!");
         })
         .catch(function (error) {
           console.log(error);
+          alert("Creation Error...");
         });
       } else {
         console.log(validate.errors);

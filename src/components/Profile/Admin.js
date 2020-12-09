@@ -4,7 +4,6 @@ function Admin() {
   const [inputuserquery, setUserquery] = useState("");
   const [events, setEvents] = useState([]);
   const [displayTable, setDisplayTable] = useState(false);
-  const [adminsearch, setAdminsearch] = useState(false);
   function handleInputs(value, setState) {
     setState(value);
     console.log(value);
@@ -15,7 +14,28 @@ function Admin() {
     if (inputuserquery !== "") {
       console.log("Submitted Query with UserName:" + inputuserquery);
       Axios.get(
-        `http://localhost:5000/api/events/adminEvents/${inputuserquery}?adminsearch=${adminsearch}`
+        `http://localhost:5000/api/events/adminEvents/${inputuserquery}`
+      )
+        .then(function (response) {
+          console.log(response);
+          setDisplayTable(true);
+          setEvents(response.data.events);
+          events.map((event) => {
+            console.log(event);
+          });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
+  function handleSubmit2(event) {
+    event.preventDefault();
+    if (inputuserquery !== "") {
+      console.log("Submitted Query with UserName:" + inputuserquery);
+      Axios.get(
+        `http://localhost:5000/api/events/userEvents/${inputuserquery}`
       )
         .then(function (response) {
           console.log(response);
@@ -35,7 +55,7 @@ function Admin() {
 
   return (
     <div className="Admin">
-      <h1>Super Admin Page</h1>
+      <h1>Admin Page</h1>
       <form>
         <div className="form-group">
           <label htmlFor="inputqueryname">Query User</label>
@@ -53,30 +73,19 @@ function Admin() {
           className="btn btn-primary"
           onClick={handleSubmit}
         >
-          Submit Query
+          Submit Admin Events
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          onClick={handleSubmit2}
+        >
+          Search User Participation
         </button>
         <br />
       </form>
       <br></br>
-      <div className="container">
-        <div className="row">
-          <div className = "col">
-            Events 
-          </div>
-          <div className = "col">
-            Search Toggle (Checked Looks for Admin)
-          </div>
-          <div className = "col">
-            <div class="form-check">
-              <input class="form-check-input" 
-              type="checkbox" 
-              value="" 
-              id="flexCheckDefault"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <h1>User's Events</h1>
       
       {displayTable ? (
               <table className="table">
