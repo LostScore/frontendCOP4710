@@ -26,8 +26,8 @@ function Login() {
     console.log("InputPassword: " + inputpassword);
     
     if (inputusername !== "" && inputpassword !== "") {
-      Axios.post("http://localhost:5000/api/login", {
-        inputusername: inputusername,
+      Axios.get(`http://localhost:5000/api/login/${inputusername}`, {
+        inputusername: inputusername, 
         inputpassword: inputpassword,
         
       })
