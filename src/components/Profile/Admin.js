@@ -25,6 +25,7 @@ function Admin() {
           });
         })
         .catch(function (error) {
+          alert("Error: No Users");
           console.log(error);
         });
     }
@@ -46,6 +47,7 @@ function Admin() {
           });
         })
         .catch(function (error) {
+          alert("Error: No Users");
           console.log(error);
         });
     }

@@ -42,9 +42,11 @@ function CreateEvent() {
         Axios.post("http://localhost:5000/api/events/create", data)
             .then(function (response) {
               console.log(response);
+              alert("Creation Sucess!");
             })
             .catch(function (error) {
               console.log(error);
+              alert("Creation Failure..");
             });
 
     }

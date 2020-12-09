@@ -45,6 +45,7 @@ function Login() {
         .catch(function (error) {
           console.log(error);
           alert("Invalid Credentials");
+        });
     }
   }
 

@@ -40,6 +40,7 @@ function SearchEvents() {
           })
           .catch(function (error) {
             console.log(error);
+            alert("Error: No Events Found");
           });
     }
   }
@@ -67,6 +68,7 @@ function SearchEvents() {
         })
         .catch(function (error) {
           console.log(error);
+          alert("Error: No Events Found");
         });
   }
 }
