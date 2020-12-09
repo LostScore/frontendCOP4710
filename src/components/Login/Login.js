@@ -30,7 +30,7 @@ function Login() {
           console.log("Status is res:", response.status);
           setError(false);
           localStorage.setItem('username', response.data.user_name);
-          localStorage.setItem('userlevel' response.data.user_level);
+          localStorage.setItem('userlevel', response.data.user_level);
           
         })
         .catch(function (error) {

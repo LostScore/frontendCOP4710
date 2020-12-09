@@ -4,6 +4,7 @@ function HomeHub(){
     return (
         <div className = "HomeHub">
         <h1>HomeHub</h1>
+            
             <Link to = '/login'>
                 <button type="button" class="btn btn-primary">Login</button>
             </Link>
