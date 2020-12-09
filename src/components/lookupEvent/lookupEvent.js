@@ -73,7 +73,7 @@ function SearchEvents() {
   }
 }
 
-  function JoinEvent(event,event_id,admin_username,admin_id){
+  function JoinEvent(event_id,admin_username,admin_id){
     const data = {
         eventid: event_id,
         adminname: admin_username,
