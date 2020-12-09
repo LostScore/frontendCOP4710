@@ -29,6 +29,7 @@ function HeldEvent() {
       })
       .catch(function (error) {
         console.log(error);
+        alert("Event's not found");
       });
 
   }
@@ -49,6 +50,7 @@ function HeldEvent() {
       })
       .catch(function (error) {
         console.log(error);
+        alert("Event's not found");
       });
 
   }
