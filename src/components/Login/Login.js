@@ -1,7 +1,5 @@
 import Axios from "axios";
 import { useState } from "react";
-import Error from './Status/Error.js';
-import Success from './Status/Error.js';
 function Login() {
   const [inputusername, setInputuser] = useState("");
   const [inputpassword, setInputpassword] = useState("");
@@ -12,25 +10,14 @@ function Login() {
     console.log(value);
   }
 
-  function displayError(){
-    <Error></Error>
-  }
 
-  function displaySuccess(){
-    <Success></Success>
-  }
   
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("InputUserName: " + inputusername);
-    console.log("InputPassword: " + inputpassword);
+    console.log("Sending InputUserName:",inputusername);
     
-    if (inputusername !== "" && inputpassword !== "") {
-      Axios.get(`http://localhost:5000/api/login/${inputusername}`, {
-        inputusername: inputusername, 
-        inputpassword: inputpassword,
-        
-      })
+    if (inputusername !== "" ) {
+      Axios.get(`http://localhost:5000/api/login/${inputusername}`)
         .then(function (response) {
           console.log(response);
           localStorage.setItem('username', response.data.user_name);
