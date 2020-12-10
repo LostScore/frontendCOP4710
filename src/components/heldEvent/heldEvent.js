@@ -14,36 +14,39 @@ function HeldEvent() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("Submitted Query with user:",username );
+    console.log("Submitted Query with user:", username);
     Axios.get(
-    `http://localhost:5000/api/events/adminEvents/${username}`
+      `http://localhost:5000/api/events/userEvents/user/${username}`
     )
-    .then(function (response) {
+      .then(function (response) {
         console.log(response);
         setDisplayTable(true);
-        setEvents(response.data.events);
+        setEvents(response.data);
         events.map((event) => {
-          console.log(event); 
+          console.log(event);
         });
-        localStorage.setItem("userlevel","2");
+        localStorage.setItem("userlevel", "2");
       })
       .catch(function (error) {
         console.log(error);
         alert("Event's not found");
       });
 
+
+    // let date = new Date().getMonth;
+
   }
 
   function handleSubmit1(event) {
     event.preventDefault();
-    console.log("Submitted Query with user:",username );
+    console.log("Submitted Query with user:", username);
     Axios.get(
-    `http://localhost:5000/api/events/adminEvents/active/${username}`
+      `http://localhost:5000/api/events/adminEvents/active/${username}`
     )
-    .then(function (response) {
+      .then(function (response) {
         console.log(response);
         setDisplayTable(true);
-        setEvents(response.data.events);
+        setEvents(response.data);
         events.map((event) => {
           console.log(event);
         });
@@ -58,47 +61,46 @@ function HeldEvent() {
   return (
     <div className="heldEvent">
       <h5>Click Search to Find Event's You Have Hosted</h5>
-        <br />
-        <br/>
-        <button type="submit" className="btn btn-primary" onClick={handleSubmit1}>
-          Currently Active Events
+      <br />
+      <br />
+      <button type="submit" className="btn btn-primary" onClick={handleSubmit1}>
+        Currently Active Events
         </button>
-        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
-          All Events
+      <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
+        All Events
         </button>
 
-        <h1>Event's Hosted</h1>
-        {displayTable ? (
-              <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Username</th>
-                  <th scope="col">Event Name</th>
-                  <th scope="col">URL</th>
-                  <th scope="col">Start Date</th>
-                  <th scope="col">End Date</th>
-                </tr>
-              </thead>
-      
-              {events.map((e) => (
-                
-                <tbody key ={e.event_id}>
-                  <tr>
-                    <td>{e.admin_username}</td>
-                    <td>{e.event_title}</td>
-                    <td>{e.homepage_url}</td>
-                    <td>{e.start_date}</td>
-                    <td>{e.end_date}</td>
-                
-                  </tr>
-                </tbody>
-                
-              ))}
-            </table>
+      <h1>Event's Hosted</h1>
+      {displayTable ? (
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Event Name</th>
+              <th scope="col">URL</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+            </tr>
+          </thead>
+
+          {events.map((e) => (
+
+            <tbody key={e.event_id}>
+              <tr>
+                <td>{e.user_name}</td>
+                <td>{e.event_title}</td>
+                <td>{e.homepage_url}</td>
+                <td>{e.start_date}</td>
+                <td>{e.end_date}</td>
+              </tr>
+            </tbody>
+
+          ))}
+        </table>
       ) : (
-        <a>No Search</a>
-      )}
-        
+          <a>No Search</a>
+        )}
+
     </div>
   );
 }

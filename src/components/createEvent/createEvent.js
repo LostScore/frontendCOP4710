@@ -18,40 +18,40 @@ function CreateEvent() {
   }
 
   function handleSubmit(event) {
-      event.preventDefault();
-      const data = {
-          adminname: username,
-          adminid: id,
-          eventTitle: eventTitle,
-          eventCity: eventCity,
-          eventUrl: eventUrl,
-          startdate: startdate,
-          enddate: enddate,
-          eventDesc: eventDesc
-      }
+    event.preventDefault();
+    const data = {
+      adminname: username,
+      adminid: id,
+      eventTitle: eventTitle,
+      eventCity: eventCity,
+      eventUrl: eventUrl,
+      startdate: startdate,
+      enddate: enddate,
+      eventDesc: eventDesc
+    }
     console.log(data);
     const rules = {
-        eventTitle: 'required',
-        eventCity: 'required',
-        eventUrl: 'required|url',
-        startdate: 'required',
-        enddate: 'required',
+      eventTitle: 'required',
+      eventCity: 'required',
+      eventUrl: 'required|url',
+      startdate: 'required',
+      enddate: 'required',
     }
-    const validate = new Validator(data,rules);
-    if(validate.passes()){
-        Axios.post("http://localhost:5000/api/events/create", data)
-            .then(function (response) {
-              console.log(response);
-              alert("Creation Sucess!");
-            })
-            .catch(function (error) {
-              console.log(error);
-              alert("Creation Failure..");
-            });
+    const validate = new Validator(data, rules);
+    if (validate.passes()) {
+      Axios.post("http://localhost:5000/api/events/createEvent", data)
+        .then(function (response) {
+          console.log(response);
+          alert("Creation Sucess!");
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert("Creation Failure..");
+        });
 
     }
-    else{
-        console.log(validate.errors);
+    else {
+      console.log(validate.errors);
     }
   }
 
@@ -107,7 +107,7 @@ function CreateEvent() {
             <div className="form-group">
               <label htmlFor="inputfirstname">Start Date</label>
               <input
-                type="date"
+                type="text"
                 className="form-control"
                 id="inputfirstname"
                 placeholder="Date"
@@ -122,7 +122,7 @@ function CreateEvent() {
             <div className="form-group">
               <label htmlFor="inputenddate">End Date</label>
               <input
-                type="date"
+                type="text"
                 className="form-control"
                 id="inputenddate"
                 placeholder="Date"
@@ -145,7 +145,7 @@ function CreateEvent() {
                 placeholder="Sample Description"
                 onChange={(event) => handleInputs(event.target.value, setDesc)}
                 required
-                
+
               />
             </div>
           </div>

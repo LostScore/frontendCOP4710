@@ -19,7 +19,7 @@ function Admin() {
         .then(function (response) {
           console.log(response);
           setDisplayTable(true);
-          setEvents(response.data.events);
+          setEvents(response.data);
           events.map((event) => {
             console.log(event);
           });
@@ -41,7 +41,7 @@ function Admin() {
         .then(function (response) {
           console.log(response);
           setDisplayTable(true);
-          setEvents(response.data.events);
+          setEvents(response.data);
           events.map((event) => {
             console.log(event);
           });
@@ -53,7 +53,7 @@ function Admin() {
     }
   }
 
-  
+
 
   return (
     <div className="Admin">
@@ -88,39 +88,39 @@ function Admin() {
       </form>
       <br></br>
       <h1>User's Events</h1>
-      
-      {displayTable ? (
-              <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Username</th>
-                  <th scope="col">Event Name</th>
-                  <th scope="col">URL</th>
-                  <th scope="col">Start Date</th>
-                  <th scope="col">End Date</th>
-                </tr>
-              </thead>
-      
-              {events.map((e) => (
-                
-                <tbody key ={e.event_id}>
-                  <tr>
-                    <td>{e.admin_username}</td>
-                    <td>{e.event_title}</td>
-                    <td>{e.homepage_url}</td>
-                    <td>{e.start_date}</td>
-                    <td>{e.end_date}</td>
-                
-                  </tr>
-                </tbody>
-                
-              ))}
-            </table>
-      ) : (
-        <a>No Search</a>
-      )}
 
-        
+      {displayTable ? (
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Event Name</th>
+              <th scope="col">URL</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+            </tr>
+          </thead>
+
+          {events.map((e) => (
+
+            <tbody key={e.event_id}>
+              <tr>
+                <td>{e.admin_username}</td>
+                <td>{e.event_title}</td>
+                <td>{e.homepage_url}</td>
+                <td>{e.start_date}</td>
+                <td>{e.end_date}</td>
+
+              </tr>
+            </tbody>
+
+          ))}
+        </table>
+      ) : (
+          <a>No Search</a>
+        )}
+
+
 
     </div>
   );

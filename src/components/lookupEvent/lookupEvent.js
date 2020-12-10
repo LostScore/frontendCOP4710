@@ -16,32 +16,32 @@ function SearchEvents() {
   }
 
   function handleSubmitDates(event) {
-      event.preventDefault();
-      const data = {
-        startDate: startDate,
-        endDate: endDate,
-      }
+    event.preventDefault();
+    const data = {
+      startDate: startDate,
+      endDate: endDate,
+    }
 
-      const rules = {
-        startDate: 'required',
-        endDate: 'required'
-        }
-      const validate = new Validator(data, rules);
+    const rules = {
+      startDate: 'required',
+      endDate: 'required'
+    }
+    const validate = new Validator(data, rules);
 
-      if(validate.passes()){
-        Axios.post("http://localhost:5000/api/lookupEventDate", data)
+    if (validate.passes()) {
+      Axios.get(`http://localhost:5000/api/events/${startDate}/${endDate}`, data)
         .then(function (response) {
-            console.log(response);
-            setDisplayTable(true);
-            setEvents(response.data.events);
-            events.map((event) => {
-              console.log(event);
-            });
-          })
-          .catch(function (error) {
-            alert("Error: NoUsers");
-            console.log(error);
+          console.log(response);
+          setDisplayTable(true);
+          setEvents(response.data);
+          events.map((event) => {
+            console.log(event);
           });
+        })
+        .catch(function (error) {
+          alert("Error: NoUsers");
+          console.log(error);
+        });
     }
   }
 
@@ -53,36 +53,36 @@ function SearchEvents() {
     console.log(data);
     const rules = {
       location: 'required',
-      }
+    }
     const validate = new Validator(data, rules);
 
-    if(validate.passes()){
-      Axios.post("http://localhost:5000/api/lookupEventCity", data)
-      .then(function (response) {
+    if (validate.passes()) {
+      Axios.get(`http://localhost:5000/api/events/${location}`)
+        .then(function (response) {
           console.log(response);
           setDisplayTable(true);
-          setEvents(response.data.events);
+          setEvents(response.data);
           events.map((event) => {
-            console.log(event);
+            console.log("Events being mapped:", event);
           });
         })
         .catch(function (error) {
           console.log(error);
           alert("Error: No Events Found");
         });
+    }
   }
-}
 
-  function JoinEvent(event_id,admin_username,admin_id){
+  function JoinEvent(event_id, admin_username, admin_id) {
     const data = {
-        eventid: event_id,
-        adminname: admin_username,
-        adminid: admin_id ,
-        userid: localStorage.getItem("userid")
+      eventid: event_id,
+      adminname: admin_username,
+      adminid: admin_id,
+      userid: localStorage.getItem("userid")
     }
     console.log(data);
     Axios.post("http://localhost:5000/api/joinEvent", data)
-    .then(function (response) {
+      .then(function (response) {
         console.log(response);
         alert("join success!");
       })
@@ -101,10 +101,10 @@ function SearchEvents() {
             <div className="form-group">
               <label htmlFor="inputstartdate">Start Date</label>
               <input
-                type="date"
+                type="text"
                 className="form-control"
                 id="inputstartdate"
-                placeholder="xx-xx-xxxx"
+                placeholder="xxxx-xx-xx"
                 onChange={(event) =>
                   handleInputs(event.target.value, setStartDate)
                 }
@@ -115,83 +115,83 @@ function SearchEvents() {
             <div className="form-group">
               <label htmlFor="inputenddate">End date</label>
               <input
-                type="date"
+                type="text"
                 className="form-control"
                 id="inputenddate"
-                placeholder="xx-xx-xxxx"
+                placeholder="xxxx-xx-xx"
                 onChange={(event) => handleInputs(event.target.value, setEndDate)}
               />
             </div>
           </div>
-          </div>
-          <br/>
-            <button type="submit" className="btn btn-primary" onClick={handleSubmitDates}>
-            Search
+        </div>
+        <br />
+        <button type="submit" className="btn btn-primary" onClick={handleSubmitDates}>
+          Search
             </button>
-        <br/>
-        <br/>
+        <br />
+        <br />
         OR:
-        <br/>
-        <br/>
-        <div className = "row">
-            <div className="col">
-                <div className="form-group">
-                <label htmlFor="inputlocation">City</label>
-                <input
-                    type="text"
-                    className="form-control"
-                    id="inputlocation"
-                    onChange={(event) =>
-                    handleInputs(event.target.value, setLocation)
-                    }
-                />
-                </div>
+        <br />
+        <br />
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="inputlocation">City</label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputlocation"
+                onChange={(event) =>
+                  handleInputs(event.target.value, setLocation)
+                }
+              />
             </div>
           </div>
-          <br/>
-          <button type="submit" className="btn btn-primary" onClick={handleSubmitLocation}>
-                Search
+        </div>
+        <br />
+        <button type="submit" className="btn btn-primary" onClick={handleSubmitLocation}>
+          Search
           </button>
       </form>
-      
+
       {displayTable ? (
-              <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Username</th>
-                  <th scope="col">Event Name</th>
-                  <th scope="col">URL</th>
-                  <th scope="col">Start Date</th>
-                  <th scope="col">End Date</th>
-                  <th scope="col">Join</th>
-                </tr>
-              </thead>
-      
-              {events.map((e) => (
-                
-                <tbody key ={e.event_id}>
-                  <tr>
-                    <td>{e.admin_username}</td>
-                    <td>{e.event_title}</td>
-                    <td>{e.homepage_url}</td>
-                    <td>{e.start_date}</td>
-                    <td>{e.end_date}</td>
-                    <td>
-                      <li 
-                        onClick={()=>JoinEvent(e.event_id,e.admin_username,e.admin_id)}>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Event Name</th>
+              <th scope="col">URL</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Join</th>
+            </tr>
+          </thead>
+
+          {events.map((e) => (
+
+            <tbody key={e.event_id}>
+              <tr>
+                <td>{e.admin_username}</td>
+                <td>{e.event_title}</td>
+                <td>{e.homepage_url}</td>
+                <td>{e.start_date}</td>
+                <td>{e.end_date}</td>
+                <td>
+                  <li
+                    onClick={() => JoinEvent(e.event_id, e.admin_username, e.admin_id)}>
                     Join
                   </li></td>
-                  </tr>
-                </tbody>
-                
-              ))}
-            </table>
-      ) : (
-        <a>No Search</a>
-      )}
-                
+              </tr>
+            </tbody>
 
-                  
+          ))}
+        </table>
+      ) : (
+          <a>No Search</a>
+        )}
+
+
+
     </div>
   );
 }

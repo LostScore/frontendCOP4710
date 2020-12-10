@@ -11,22 +11,22 @@ function Login() {
   }
 
 
-  
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("Sending InputUserName:",inputusername);
-    
-    if (inputusername !== "" ) {
+    console.log("Sending InputUserName:", inputusername);
+
+    if (inputusername !== "") {
       Axios.get(`http://localhost:5000/api/login/${inputusername}`)
         .then(function (response) {
-          console.log(response);
-          localStorage.setItem('username', response.data.user_name);
-          localStorage.setItem('userlevel', response.data.user_level);
-          localStorage.setItem('userid', response.data.id);
-          localStorage.setItem("firstname",response.data.first_name);
-          localStorage.setItem("lastname",response.data.last_name);
-          localStorage.setItem("phonenum",response.data.phone_number);
-          localStorage.setItem("useremail",response.data.email);
+          console.log("our response data from the api is:::", response.data.data[0].user_name);
+          localStorage.setItem('username', response.data.data[0].user_name);
+          localStorage.setItem('userlevel', response.data.data[0].user_level);
+          localStorage.setItem('userid', response.data.data[0].id);
+          localStorage.setItem("firstname", response.data.data[0].first_name);
+          localStorage.setItem("lastname", response.data.data[0].last_name);
+          localStorage.setItem("phonenum", response.data.data[0].phone_number);
+          localStorage.setItem("useremail", response.data.data[0].email);
           alert("Login Successful!");
         })
         .catch(function (error) {
